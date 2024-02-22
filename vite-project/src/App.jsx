@@ -6,13 +6,20 @@ function App() {
   const [quote, setQuote] = useState([]);
 
   useEffect(() => {
-    axios.get('https://ron-swanson-quotes.herokuapp.com/v2/quotes')
-      .then(response => {
-        setQuote(response.data[0]);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+    const fetchQuote = () => {
+      axios.get('https://ron-swanson-quotes.herokuapp.com/v2/quotes')
+        .then(response => {
+          setQuote(response.data[0]);
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
+    }
+
+    fetchQuote();
+    const intervalId = setInterval(fetchQuote, 5000);
+
+    return () => clearInterval(intervalId); // Clean up on component unmount
   }, []);
 
   return (
